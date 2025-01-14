@@ -6,6 +6,7 @@
   padding: 20px 10%;
   border-radius: 30px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  margin-bottom: 6%;
 
   & .subTitle {
     font-size: 1.5em;
@@ -16,19 +17,48 @@
   & label {
     margin-bottom: 10px;
     display: none;
+    text-align: center;
+
+    & .indication {
+      display: none;
+      font-size: small;
+      color: red;
+    }
   }
+
+  & .labelError {
+    color: red;
+
+    & .indication {
+      display: block;
+    }
+  }
+
   & .visible {
     display: block;
   }
 
-  & input {
+  & input:not(.react-select-container input) {
     padding: 5px;
     margin-bottom: 20px !important;
   }
 
+  & input {
+    min-width: 150px !important;
+  }
+  & .inputError {
+    border: 1px solid red;
+    border-radius: 3px;
+  }
+
+  & .inputError .react-select__control {
+    border: unset;
+    border-color: red;
+  }
+
   & input,
-  select,
-  fieldset {
+  fieldset,
+  .react-select-container {
     margin-bottom: 10px;
     width: 100%;
   }
@@ -43,13 +73,13 @@
   }
 
   & select,
-  button {
+  .saveButton {
     padding: 10px;
     border-radius: 5px;
     background-color: #f6f6f6;
     cursor: pointer;
   }
-  & button {
+  & .saveButton {
     color: #090909;
     padding: 0.7em 1.7em;
     border-radius: 0.5em;
@@ -59,12 +89,25 @@
     box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
   }
 
-  & button:hover {
+  & .saveButton:hover {
     border: 1px solid green;
   }
 
-  & button:active {
+  & .saveButton:active {
     box-shadow: 4px 4px 12px #c5c5c5, -4px -4px 12px #ffffff;
     background-color: lightgreen;
+  }
+}
+
+.modal {
+  &__closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: large;
   }
 }
