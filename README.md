@@ -24,7 +24,7 @@ Convertir l'application existante basée sur jQuery en une application React mod
 1. **Cloner le dépôt** :
 
    ```bash
-   git clone <URL_DU_DEPOT>
+   git clone https://github.com/LUCIENMathieu03/HRnet-OCR-P14.git
    cd HRnet
    ```
 

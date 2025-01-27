@@ -20,9 +20,6 @@ const EmployeeList = () => {
       </div>
     </div>
   );
-  {
-    console.log("hello");
-  }
 };
 
 export default EmployeeList;

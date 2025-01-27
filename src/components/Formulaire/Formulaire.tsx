@@ -82,7 +82,7 @@ export default function Formulaire() {
         hasError = true;
       } else if (!inputIsEmpty) {
         //birth an start date verification
-        if (key.includes("date")) {
+        if (key.includes("date-of-birth")) {
           const today = new Date();
           const inputDateValue = new Date(values[key] as string);
 
@@ -130,6 +130,11 @@ export default function Formulaire() {
           input.value = "";
         }
       }
+      setFirstName("");
+      setLastName("");
+      setStreet("");
+      setCity("");
+      setZipCode(undefined);
       setStartDate(null);
       setBirthDate(null);
       setStateSelect(null);
