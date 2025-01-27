@@ -1,23 +1,32 @@
-import { useState, FormEvent } from "react";
-import Select from "react-select";
+import { useState, FormEvent, ChangeEvent } from "react";
+import Select, { SingleValue } from "react-select";
 import Modal from "react-modal";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import states from "../../data/states.json";
 import departments from "../../data/departements.json";
 import "./formulaire.scss";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { tableDataSlice } from "../../redux/reducer";
 
 type OptionType = { value: string; label: string };
 
 Modal.setAppElement("#root");
 
 export default function Formulaire() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [zipCode, setZipCode] = useState<number>();
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [birthDate, setBirthDate] = useState<Date | null>(null);
   const [stateSelect, setStateSelect] = useState<OptionType | null>(null);
   const [departmentSelect, setDepartmentSelect] = useState<OptionType | null>(null);
   const [modalIsOpen, setIsOpen] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const customStyles: Modal.Styles = {
     content: {
@@ -39,8 +48,6 @@ export default function Formulaire() {
     const formData = new FormData(form);
     const values = Object.fromEntries(formData.entries());
 
-    console.log(values);
-
     inputFilledCheck(values);
   };
 
@@ -59,6 +66,7 @@ export default function Formulaire() {
 
   const inputFilledCheck = (values: { [k: string]: FormDataEntryValue }) => {
     let hasError = false;
+    console.log(values);
 
     for (const key in values) {
       const input = document.getElementById(`${key}`);
@@ -101,6 +109,19 @@ export default function Formulaire() {
     }
 
     if (hasError === false) {
+      const payload = {
+        firstName: values["first-name"],
+        lastName: values["last-name"],
+        dateOfBirth: values["date-of-birth"],
+        startDate: values["start-date"],
+        street: values["street"],
+        city: values["city"],
+        state: values["state"],
+        zipCode: values["zip-code"],
+        department: values["department"],
+      };
+      dispatch(tableDataSlice.actions.saveEmployee(payload));
+
       setIsOpen(true);
 
       for (const key in values) {
@@ -116,27 +137,108 @@ export default function Formulaire() {
     }
   };
 
+  const verifyInput = (
+    e?: ChangeEvent<HTMLInputElement> | undefined,
+    date?: Date | null | undefined,
+    inputName?: string | undefined,
+    value?: SingleValue<OptionType> | undefined
+  ) => {
+    let input;
+    //Cas input simple
+    if (e) {
+      input = e.target;
+
+      switch (input.id) {
+        case "first-name":
+          setFirstName(input.value);
+          break;
+
+        case "last-name":
+          setLastName(input.value);
+          break;
+
+        case "street":
+          setStreet(input.value);
+          break;
+        case "city":
+          setCity(input.value);
+          break;
+
+        case "zip-code":
+          setZipCode(parseInt(input.value));
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    //Cas composant react
+    if (inputName) {
+      switch (inputName) {
+        case "date-of-birth":
+          if (date) {
+            setBirthDate(date);
+          }
+          break;
+        case "start-date":
+          if (date) {
+            setStartDate(date);
+          }
+          break;
+        case "state":
+          if (value) {
+            setStateSelect(value);
+          }
+          break;
+        case "department":
+          if (value) {
+            setDepartmentSelect(value);
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
   return (
     <>
       <form action="#" id="create-employee" className="formulaire" onSubmit={(e) => handleSaveEmployee(e)}>
         <h2 className="subTitle">Create Employee</h2>
 
         <label htmlFor="first-name">First Name </label>
-        <input name="first-name" type="text" id="first-name" placeholder="First Name" />
+        <input
+          name="first-name"
+          type="text"
+          id="first-name"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => verifyInput(e)}
+        />
 
         <label htmlFor="last-name">Last Name</label>
-        <input name="last-name" type="text" id="last-name" placeholder="Last Name" />
+        <input
+          name="last-name"
+          type="text"
+          id="last-name"
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => verifyInput(e)}
+        />
 
         <label htmlFor="date-of-birth" className="visible">
           Date of Birth :<p className="indication">Please choose a day less than or equal to today</p>
         </label>
         <DatePicker
           selected={birthDate}
-          onChange={(date) => setBirthDate(date)}
+          // onChange={(date) => setBirthDate(date)}
+          onChange={(date) => verifyInput(undefined, date, "date-of-birth")}
           placeholderText="Birth date"
           name="date-of-birth"
           id="date-of-birth"
           className="datepicker-date-of-birth"
+          autoComplete="off"
         />
 
         <label htmlFor="start-date" className="visible">
@@ -144,20 +246,29 @@ export default function Formulaire() {
         </label>
         <DatePicker
           selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          // onChange={(date) => setStartDate(date)}
+          onChange={(date) => verifyInput(undefined, date, "start-date")}
           placeholderText="Start date"
           name="start-date"
           id="start-date"
+          autoComplete="off"
         />
 
         <fieldset className="address">
           <legend>Address</legend>
 
           <label htmlFor="street">Street</label>
-          <input name="street" id="street" type="text" placeholder="Street" />
+          <input
+            name="street"
+            id="street"
+            type="text"
+            placeholder="Street"
+            value={street}
+            onChange={(e) => verifyInput(e)}
+          />
 
           <label htmlFor="city">City</label>
-          <input name="city" id="city" type="text" placeholder="City" />
+          <input name="city" id="city" type="text" placeholder="City" value={city} onChange={(e) => verifyInput(e)} />
 
           <label htmlFor="state" className="visible">
             State :
@@ -168,7 +279,8 @@ export default function Formulaire() {
             value={stateSelect}
             name="state"
             placeholder="Select a state"
-            onChange={(value) => value && setStateSelect(value)}
+            // onChange={(value) => setStateSelect(value)}
+            onChange={(value) => verifyInput(undefined, undefined, "state", value)}
             className="react-select-container"
             classNamePrefix="react-select"
           />
@@ -182,6 +294,8 @@ export default function Formulaire() {
             type="text"
             placeholder="Zip Code"
             title="Please enter at least 5 digits."
+            value={zipCode}
+            onChange={(e) => verifyInput(e)}
           />
         </fieldset>
 
@@ -193,7 +307,8 @@ export default function Formulaire() {
           options={departments}
           value={departmentSelect}
           name="department"
-          onChange={(value) => value && setDepartmentSelect(value)}
+          // onChange={(value) => setDepartmentSelect(value)}
+          onChange={(value) => verifyInput(undefined, undefined, "department", value)}
           placeholder="Select a department"
           className="react-select-container"
           classNamePrefix="react-select"
