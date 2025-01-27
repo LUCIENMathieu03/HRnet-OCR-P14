@@ -1,50 +1,60 @@
-# React + TypeScript + Vite
+# HRnet - Gestion des employés de WealthHealth
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+HRnet est une application web interne développée pour WealthHealth, conçue pour gérer efficacement les dossiers des employés. Cette nouvelle version marque une transition complète de l'ancienne architecture jQuery à React, améliorant ainsi la performance, la stabilité et la maintenabilité de l'application.
 
-Currently, two official plugins are available:
+## 🚀 Objectif
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Convertir l'application existante basée sur jQuery en une application React moderne, en remplaçant les anciens plugins tiers (sélecteurs de date, fenêtres modales, menus déroulants et tableaux) par des **composants React natifs** pour résoudre les problèmes de lenteur et de bugs récurrents.
 
-## Expanding the ESLint configuration
+## 🛠️ Fonctionnalités
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Ajout d’employés** : Permet d’enregistrer les informations des employés avec un flux intuitif.
+- **Recherche et filtrage** : Trouvez rapidement les employés grâce à des fonctionnalités de recherche performantes.
+- **Gestion des données affichées** : Contrôlez le nombre d’entrées visibles dans le tableau et naviguez facilement à travers les pages.
 
-- Configure the top-level `parserOptions` property like this:
+## 📦 Technologies utilisées
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **React** : Pour le développement de l’interface utilisateur.
+- **Vite** : Outil de build performant pour le développement et la production.
+- **TypeScript** : Pour un typage sûr et une meilleure maintenabilité.
+- **SCSS** : Pour une gestion de styles modulaires et personnalisables.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 📖 Comment lancer le projet ?
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. **Cloner le dépôt** :
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   ```bash
+   git clone <URL_DU_DEPOT>
+   cd HRnet
+   ```
+
+2. **Installer les dépendances** :
+
+   ```bash
+   npm install
+   ```
+
+3. **Lancer l'application en mode développement** :
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Construire le projet pour la production** :
+
+   ```bash
+   npm run build
+   ```
+
+5. **Prévisualiser la version de production** :
+   ```bash
+   npm run preview
+   ```
+
+## 🔬 Tests de performance
+
+Des tests ont été réalisés pour comparer la version React à l’ancienne version jQuery. Les résultats montrent des améliorations notables :
+
+- Temps de chargement réduit.
+- Fluidité dans la navigation et les interactions.
+- Réduction des erreurs liées aux plugins tiers.
